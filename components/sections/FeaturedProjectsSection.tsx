@@ -183,9 +183,9 @@ function ProjectModal({
                 exit={{ opacity: 0, scale: 0.92, y: 32 }}
                 transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
                 className="fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2
-                           w-[90vw] max-w-[1300px] max-h-[90vh]
+                           w-[96vw] sm:w-[90vw] max-w-[1300px] max-h-[90vh]
                            bg-[#f5f5f0] border border-background/8
-                           rounded-[32px] overflow-hidden flex flex-col"
+                           rounded-[24px] sm:rounded-[32px] overflow-hidden flex flex-col"
                 style={{ boxShadow: "0 32px 80px rgba(0,0,0,0.35)" }}
             >
                 {/* Close button */}
@@ -202,7 +202,7 @@ function ProjectModal({
                 {/* Scrollable content */}
                 <div className="overflow-y-auto flex-1">
                     {/* Hero image */}
-                    <div className="relative w-full aspect-16/7 shrink-0">
+                    <div className="relative w-full aspect-[16/9] sm:aspect-[16/7] shrink-0">
                         <Image
                             src={project.image}
                             alt={project.title}

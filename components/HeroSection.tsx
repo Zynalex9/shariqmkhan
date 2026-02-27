@@ -59,12 +59,10 @@ export default function HeroSection() {
         <section
             ref={sectionRef}
             id="home"
-            className="relative w-full h-[calc(100vh-64px)] flex flex-col justify-end overflow-hidden"
+            className="relative w-full min-h-[81.5vh] sm:h-[calc(100vh-64px)] flex flex-col justify-end overflow-hidden"
             style={{ background: "#050505" }}
         >
-            {/* ── Subtle background image (faded cityscape / texture) ── */}
             <div className="absolute inset-0 z-0">
-                {/* REPLACE_WITH_BACKGROUND_IMAGE: Use a faded cityscape or dark ambient photo */}
                 <Image
                     src="/10.png"
                     alt="Background"
@@ -73,11 +71,9 @@ export default function HeroSection() {
                     sizes="100vw"
                     priority
                 />
-                {/* Dark gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-[#050505]/60" />
             </div>
 
-            {/* ── Top bar: small credential text ── */}
             <div className="absolute top-0 left-0 right-0 z-20 px-6 sm:px-10 py-6 flex justify-between items-start">
                 <FloatingLabel delay={1.2}>
                     <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/50 leading-relaxed">

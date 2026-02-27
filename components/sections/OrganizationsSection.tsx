@@ -33,7 +33,7 @@ export default function OrganizationsSection() {
             <div className="mx-auto max-w-7xl">
                 <AnimatedSection>
                     <p className="text-xs text-white/30 mb-3 tracking-wide">( 02 )</p>
-                    <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[0.95] tracking-tight mb-20">
+                    <h2 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white leading-[0.95] tracking-tight mb-20">
                         ORGANIZATIONS
                     </h2>
                 </AnimatedSection>

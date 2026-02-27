@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main className="pt-24">
+      <main className="pt-20 md:pt-24">
         <HeroSection />
         <IntroSection />
         <AboutSection />
