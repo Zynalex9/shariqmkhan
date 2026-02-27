@@ -59,7 +59,7 @@ export default function HeroSection() {
         <section
             ref={sectionRef}
             id="home"
-            className="relative w-full min-h-[81.5vh] sm:h-[calc(100vh-64px)] flex flex-col justify-end overflow-hidden"
+            className="relative w-full min-h-fit sm:h-[calc(100vh-64px)] flex flex-col justify-end overflow-hidden"
             style={{ background: "#050505" }}
         >
             <div className="absolute inset-0 z-0">
@@ -111,7 +111,7 @@ export default function HeroSection() {
                             initial={{ opacity: 0, scale: 0.92 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 1, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] as const }}
-                            className="relative mx-auto w-[160px] sm:w-[200px] md:w-[240px] lg:w-[270px] z-20"
+                            className="relative mx-auto w-[220px] sm:w-[200px] md:w-[240px] lg:w-[270px] z-20"
                         >
                             <div className="relative aspect-[3/4] w-full overflow-hidden">
                                 {/* REPLACE_WITH_HERO_PHOTO: Main portrait of Shariq */}
