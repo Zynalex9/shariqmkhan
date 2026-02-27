@@ -6,10 +6,10 @@ import AnimatedSection from "@/components/AnimatedSection";
 import { motion } from "framer-motion";
 
 const SOCIALS = [
+    { label: "Email", icon: Mail, href: "mailto:shariq@shariqmkhan.com", color: "#C97676" },
     { label: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/in/shariqmkhan", color: "#E8B400" },
     { label: "X / Twitter", icon: Twitter, href: "https://x.com/shariqmkhan", color: "#7E9E8B" },
     { label: "Instagram", icon: Instagram, href: "https://instagram.com/shariqmkhan", color: "#8B8BAE" },
-    { label: "Email", icon: Mail, href: "mailto:shariq@example.com", color: "#C97676" },
 ];
 
 export default function ConnectSection() {

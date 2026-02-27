@@ -21,8 +21,8 @@ export default function IntroSection() {
                 <AnimatedSection className="md:col-span-4 bg-[#0a0a0a] border-b border-r border-white/[0.06] p-10 sm:p-12 flex flex-col justify-between min-h-[280px] sm:min-h-[320px]">
                     <span className="text-[#E8B400] text-4xl font-serif leading-none select-none">&ldquo;</span>
                     <div>
-                        <p className="text-2xl sm:text-3xl font-bold text-white leading-[1.2] tracking-tight mt-4">
-                            Shaping narratives that move nations.
+                        <p className="text-lg sm:text-xl font-medium text-white leading-[1.5] tracking-tight mt-4">
+                            When you tell a story with purpose, you don&rsquo;t just inform, you inspire minds to think; to take some kind of action. Whether you&rsquo;re behind the camera or a keyboard, or leading from the front, your narrative becomes a medium for change, shaping perception and driving impact.
                         </p>
                         <p className="mt-6 text-[11px] uppercase tracking-[0.2em] text-white/25">
                             — Shariq M. Khan
@@ -78,19 +78,17 @@ export default function IntroSection() {
                 {/* Panel 4 — Bold headline + body */}
                 <AnimatedSection delay={0.06} className="md:col-span-5 bg-[#f2f2ed] border-b border-r border-[#050505]/[0.08] p-10 sm:p-12 flex flex-col justify-between min-h-[300px]">
                     <div>
-                        <p className="text-[10px] uppercase tracking-[0.25em] text-[#050505]/30 mb-6">Founder &amp; Director</p>
+                        <p className="text-[10px] uppercase tracking-[0.25em] text-[#050505]/30 mb-6">Get to know</p>
                         <h2 className="text-4xl sm:text-5xl font-bold text-[#050505] leading-[0.95] tracking-tight">
-                            MEDIA.
+                            SHARIQ
                             <br />
-                            POLICY.
+                            M.
                             <br />
-                            <span className="text-[#E8B400]">STRATEGY.</span>
+                            <span className="text-[#E8B400]">KHAN</span>
                         </h2>
                     </div>
                     <p className="text-[13px] text-[#050505]/50 leading-[1.8] mt-6">
-                        Shariq M. Khan is a visionary entrepreneur and strategic advisor who has
-                        spent two decades at the nexus of governance, defense communications,
-                        and global advocacy&mdash;shaping how Pakistan presents itself to the world.
+                        Shariq is a strategic communicator, policy advocate and media visionary with nearly two decades of experience at the intersection of media, public policy, and strategic advocacy.
                     </p>
                 </AnimatedSection>
 
@@ -99,7 +97,7 @@ export default function IntroSection() {
                     <p className="text-[10px] uppercase tracking-[0.25em] text-white/20">What he delivers</p>
                     <div>
                         <p className="text-sm text-white/30 leading-relaxed mb-4">
-                            Looking for a partner who bridges communication, policy, and creative excellence?
+                            Shaping narratives that influence legislation, elevate public discourse, and drive sustainable development.
                         </p>
                         <p className="text-2xl sm:text-3xl font-bold text-white leading-tight tracking-tight">
                             ARE YOU READY TO BUILD SOMETHING LASTING?
@@ -107,17 +105,17 @@ export default function IntroSection() {
                     </div>
                     <div className="flex gap-3 mt-6">
                         <button
-                            onClick={() => scrollTo("#connect")}
+                            onClick={() => scrollTo("#training")}
                             className="px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.15em] cursor-pointer relative overflow-hidden group"
                             style={{ background: "linear-gradient(135deg, #E8B400, #C99A00)", color: "#fff" }}
                         >
-                            Connect
+                            Invite to Speak
                         </button>
                         <button
                             onClick={() => scrollTo("#projects")}
                             className="px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.15em] border border-white/15 text-white/50 hover:border-white/30 hover:text-white/80 transition-all cursor-pointer"
                         >
-                            See Work
+                            Explore Work
                         </button>
                     </div>
                 </AnimatedSection>

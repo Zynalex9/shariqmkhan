@@ -5,15 +5,12 @@ import Image from "next/image";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { X } from "lucide-react";
 
-/* ─────────────────────────────────────────
-   Project data
-───────────────────────────────────────── */
 const PROJECTS = [
     {
         title: "Tobacco Control Advocacy",
         tag: "Policy Reform",
         tagColor: "#E8B400",
-        image: "/5.png",
+        image: "/4.png",
         excerpt:
             "Launched Pakistan's first digital and policy advocacy campaign on tobacco control, engaging directly with the Prime Minister and shifting national policy.",
         full: [
@@ -93,7 +90,7 @@ function ProjectRow({
         <>
             {/* Divider */}
             {index > 0 && (
-                <div className="w-full h-px bg-white/[0.07]" />
+                <div className="w-full h-px bg-background/[0.07]" />
             )}
 
             <motion.div
@@ -114,12 +111,12 @@ function ProjectRow({
                     </p>
 
                     {/* Title */}
-                    <h3 className="text-4xl sm:text-5xl lg:text-[52px] font-bold leading-[0.95] tracking-tight text-white mb-6 uppercase">
+                    <h3 className="text-4xl sm:text-5xl lg:text-[52px] font-bold leading-[0.95] tracking-tight text-background mb-6 uppercase">
                         {project.title}
                     </h3>
 
                     {/* Excerpt */}
-                    <p className="text-[15px] sm:text-[16px] text-white/50 leading-[1.75] max-w-md mb-10">
+                    <p className="text-[15px] sm:text-[16px] text-background/55 leading-[1.75] max-w-md mb-10">
                         {project.excerpt}
                     </p>
 
@@ -129,7 +126,7 @@ function ProjectRow({
                         whileHover={{ scale: 1.04 }}
                         whileTap={{ scale: 0.97 }}
                         transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                        className="self-start px-7 py-3 rounded-full border border-white/20 text-[11px] uppercase tracking-[0.18em] font-semibold text-white hover:bg-white hover:text-[#050505] hover:border-white transition-colors duration-300 cursor-pointer"
+                        className="self-start px-7 py-3 rounded-full border border-background/25 text-[11px] uppercase tracking-[0.18em] font-semibold text-background hover:bg-background hover:text-white hover:border-background transition-colors duration-300 cursor-pointer"
                     >
                         View More
                     </motion.button>
@@ -143,11 +140,11 @@ function ProjectRow({
                             src={project.image}
                             alt={project.title}
                             fill
-                            className="object-cover transition-transform duration-700 hover:scale-[1.03]"
+                            className="object-cover object-top transition-transform duration-700 hover:scale-[1.03]"
                             sizes="(max-width: 768px) 100vw, 52vw"
                         />
                         {/* Subtle gradient overlay at bottom */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/30 via-transparent to-transparent" />
+                        <div className="absolute inset-0 bg-linear-to-t from-[#f2f2ed]/20 via-transparent to-transparent" />
                     </div>
                 </div>
             </motion.div>
@@ -187,16 +184,16 @@ function ProjectModal({
                 transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
                 className="fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2
                            w-[90vw] max-w-[1300px] max-h-[90vh]
-                           bg-[#0d0d0d] border border-white/[0.08]
+                           bg-[#f5f5f0] border border-background/8
                            rounded-[32px] overflow-hidden flex flex-col"
-                style={{ boxShadow: "0 32px 80px rgba(0,0,0,0.7)" }}
+                style={{ boxShadow: "0 32px 80px rgba(0,0,0,0.35)" }}
             >
                 {/* Close button */}
                 <button
                     onClick={onClose}
                     className="absolute top-5 right-5 z-20 flex items-center justify-center
-                               w-10 h-10 rounded-full border border-white/15 text-white/50
-                               hover:text-white hover:border-white/40 transition-colors duration-200 cursor-pointer"
+                               w-10 h-10 rounded-full border border-background/15 text-background/50
+                               hover:text-background hover:border-background/40 transition-colors duration-200 cursor-pointer"
                     aria-label="Close"
                 >
                     <X className="w-4 h-4" />
@@ -205,7 +202,7 @@ function ProjectModal({
                 {/* Scrollable content */}
                 <div className="overflow-y-auto flex-1">
                     {/* Hero image */}
-                    <div className="relative w-full aspect-[16/7] flex-shrink-0">
+                    <div className="relative w-full aspect-16/7 shrink-0">
                         <Image
                             src={project.image}
                             alt={project.title}
@@ -214,7 +211,7 @@ function ProjectModal({
                             sizes="90vw"
                         />
                         {/* Gradient fade at bottom */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-[#0d0d0d]/20 to-transparent" />
+                        <div className="absolute inset-0 bg-linear-to-t from-[#f5f5f0] via-[#f5f5f0]/20 to-transparent" />
                     </div>
 
                     {/* Text content */}
@@ -228,7 +225,7 @@ function ProjectModal({
                         </p>
 
                         {/* Title */}
-                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight mb-8 uppercase">
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-background leading-tight tracking-tight mb-8 uppercase">
                             {project.title}
                         </h2>
 
@@ -243,7 +240,7 @@ function ProjectModal({
                             {project.full.map((para, idx) => (
                                 <p
                                     key={idx}
-                                    className="text-[15px] sm:text-[16px] text-white/55 leading-[1.85]"
+                                    className="text-[15px] sm:text-[16px] text-background/60 leading-[1.85]"
                                 >
                                     {para}
                                 </p>
@@ -270,10 +267,10 @@ export default function FeaturedProjectsSection() {
     return (
         <section
             id="projects"
-            className="relative bg-[#050505] py-20 sm:py-28 overflow-hidden"
+            className="relative bg-[#f2f2ed] py-20 sm:py-28 overflow-hidden"
         >
             {/* Subtle top border line */}
-            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+            <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-background/10 to-transparent" />
 
             <div className="mx-auto max-w-7xl px-6 sm:px-10">
                 {/* ── Section header ── */}
@@ -284,16 +281,16 @@ export default function FeaturedProjectsSection() {
                     transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
                     className="mb-16 sm:mb-20"
                 >
-                    <p className="text-[10px] text-white/20 mb-3 tracking-[0.25em] uppercase">
+                    <p className="text-[10px] text-background/30 mb-3 tracking-[0.25em] uppercase">
                         ( 03 )
                     </p>
                     <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-                        <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[0.95] tracking-tight">
+                        <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-background leading-[0.95] tracking-tight">
                             FEATURED
                             <br />
-                            <span className="text-white/25">PROJECTS</span>
+                            <span className="text-background/25">PROJECTS</span>
                         </h2>
-                        <p className="text-[13px] text-white/30 max-w-xs sm:text-right leading-relaxed">
+                        <p className="text-[13px] text-background/40 max-w-xs sm:text-right leading-relaxed">
                             Highlights of campaigns, initiatives &amp; reforms led by Shariq M. Khan
                         </p>
                     </div>
@@ -313,7 +310,7 @@ export default function FeaturedProjectsSection() {
             </div>
 
             {/* Subtle bottom border line */}
-            <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+            <div className="absolute bottom-0 inset-x-0 h-px bg-linear-to-r from-transparent via-background/10 to-transparent" />
 
             {/* ── Modal ── */}
             <AnimatePresence>

@@ -38,9 +38,9 @@ export default function CampaignImpactSection() {
                 {/* ── Top bar: section number + tag ── */}
                 <AnimatedSection>
                     <div className="flex items-start justify-between mb-14">
-                        <span className="text-[11px] uppercase tracking-[0.2em] text-background/30">( 04 )</span>
+                        <span className="text-[11px] uppercase tracking-[0.2em] text-background/30">Selected Impact</span>
                         <span className="text-[11px] uppercase tracking-[0.2em] text-background/30 hidden sm:block">
-                            ● Strategic. Impactful. Lasting.
+                            &#9679; Strategic. Impactful. Lasting.
                         </span>
                     </div>
                 </AnimatedSection>
