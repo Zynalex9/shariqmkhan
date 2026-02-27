@@ -7,13 +7,33 @@ import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const IMAGES = [
+    { src: "/rs=w_2560,h_1707.webp", position: "object-top" },
     { src: "/10.png", position: "object-top" },
+    { src: "/rs=w_1280,h_853 (2).webp", position: "object-top" },
+    { src: "/rs=w_1280,h_853 (3).webp", position: "object-top" },
+    { src: "/rs=w_1280,h_853 (4).webp", position: "object-top" },
+    { src: "/rs=w_1280,h_1729.webp", position: "object-top" },
+    { src: "/rs=w_2560,h_1567.webp", position: "object-top" },
+    { src: "/rs=w_2560,h_1707 (4).webp", position: "object-top" },
+    { src: "/rs=w_2560,h_1707 (5).webp", position: "object-top" },
+    { src: "/rs=w_2560,h_1707 (6).webp", position: "object-top" },
     { src: "/1.png", position: "object-top" },
+    { src: "/rs=w_984,h_1748.webp", position: "object-top" },
     { src: "/2.png", position: "object-top" },
+    { src: "/rs=w_2560,h_1920.webp", position: "object-top" },
+    { src: "/rs=w_2560,h_1707 (7).webp", position: "object-top" },
+    { src: "/rs=w_2560,h_1703.webp", position: "object-top" },
     { src: "/3.png", position: "object-top" },
+    { src: "/rs=w_2560,h_1460.webp", position: "object-top" },
     { src: "/7.png", position: "object-top" },
+    { src: "/rs=w_2560,h_1707 (1).webp", position: "object-top" },
     { src: "/4.png", position: "object-center" },
+    { src: "/rs=w_1280,h_2094.webp", position: "object-top" },
     { src: "/8.png", position: "object-top" },
+    { src: "/rs=w_2560,h_1707 (2).webp", position: "object-top" },
+    { src: "/rs=w_1280,h_721.webp", position: "object-top" },
+    { src: "/8.png", position: "object-top" },
+    { src: "/rs=w_1280,h_853.webp", position: "object-top" },
 ];
 
 const AUTOPLAY_INTERVAL = 5000;
@@ -130,7 +150,7 @@ export default function GallerySection() {
                                 src={IMAGES[prevIdx].src}
                                 alt="Previous"
                                 fill
-                                className={`object-cover ${IMAGES[prevIdx].position}`}
+                                className={` ${IMAGES[prevIdx].position}`}
                                 sizes="140px"
                             />
                             <div className="absolute inset-0 bg-[#f2f2ed]/40" />
@@ -159,9 +179,9 @@ export default function GallerySection() {
                                     animate="center"
                                     exit="exit"
                                     transition={{
-                                        opacity: { duration: 0.3, ease: "easeInOut" },
+                                        opacity: { duration: 0.2, ease: "easeInOut" },
                                         x: { type: "spring", stiffness: 300, damping: 32, mass: 0.8 },
-                                        scale: { duration: 0.3 },
+                                        scale: { duration: 0.2 },
                                     }}
                                     className="absolute inset-0"
                                 >
@@ -170,7 +190,7 @@ export default function GallerySection() {
                                         alt={`Gallery ${current + 1}`}
                                         fill
                                         draggable={false}
-                                        className={`object-cover ${IMAGES[current].position}`}
+                                        className="object-contain"
                                         sizes="(max-width: 768px) 95vw, 900px"
                                         priority
                                     />
@@ -185,7 +205,7 @@ export default function GallerySection() {
                                            flex items-center justify-center w-9 h-9 rounded-full
                                            bg-white/65 backdrop-blur-sm border border-white/30
                                            text-background/60 hover:text-background hover:bg-white/90
-                                           transition-all duration-200 cursor-pointer"
+                                           transition-all duration-100 cursor-pointer"
                             >
                                 <ArrowLeft className="w-4 h-4" />
                             </button>
@@ -196,7 +216,7 @@ export default function GallerySection() {
                                            flex items-center justify-center w-9 h-9 rounded-full
                                            bg-white/65 backdrop-blur-sm border border-white/30
                                            text-background/60 hover:text-background hover:bg-white/90
-                                           transition-all duration-200 cursor-pointer"
+                                           transition-all duration-100 cursor-pointer"
                             >
                                 <ArrowRight className="w-4 h-4" />
                             </button>
@@ -225,7 +245,7 @@ export default function GallerySection() {
                                 src={IMAGES[nextIdx].src}
                                 alt="Next"
                                 fill
-                                className={`object-cover ${IMAGES[nextIdx].position}`}
+                                className="object-contain"
                                 sizes="140px"
                             />
                             <div className="absolute inset-0 bg-[#f2f2ed]/40" />
@@ -245,7 +265,7 @@ export default function GallerySection() {
                                            border border-background/15 text-background/40
                                            hover:text-background hover:border-background/30
                                            disabled:opacity-20 disabled:cursor-not-allowed
-                                           transition-all duration-200 cursor-pointer"
+                                           transition-all duration-100 cursor-pointer"
                             >
                                 <ChevronLeft className="w-3.5 h-3.5" />
                             </button>
@@ -263,7 +283,7 @@ export default function GallerySection() {
                                         key={img.src + i}
                                         onClick={() => goTo(i, i > current ? 1 : -1)}
                                         aria-label={`Go to slide ${i + 1}`}
-                                        className="relative shrink-0 rounded-lg overflow-hidden cursor-pointer focus:outline-none transition-all duration-300"
+                                        className="relative shrink-0 rounded-lg overflow-hidden cursor-pointer focus:outline-none transition-all duration-200"
                                         style={{
                                             width: "76px",
                                             height: "52px",
@@ -279,7 +299,7 @@ export default function GallerySection() {
                                             alt={`Thumbnail ${i + 1}`}
                                             fill
                                             draggable={false}
-                                            className={`object-cover ${img.position}`}
+                                            className="object-contain"
                                             sizes="76px"
                                         />
                                     </button>
@@ -297,7 +317,7 @@ export default function GallerySection() {
                                            border border-background/15 text-background/40
                                            hover:text-background hover:border-background/30
                                            disabled:opacity-20 disabled:cursor-not-allowed
-                                           transition-all duration-200 cursor-pointer"
+                                           transition-all duration-100 cursor-pointer"
                             >
                                 <ChevronRight className="w-3.5 h-3.5" />
                             </button>
