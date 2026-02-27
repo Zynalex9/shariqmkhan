@@ -63,7 +63,7 @@ export default function CampaignImpactSection() {
                         {PILLARS.map((pillar) => (
                             <div
                                 key={pillar.num}
-                                className="group flex flex-col justify-between gap-10 px-6 py-8 sm:py-0 sm:px-8 first:pl-0 last:pr-0"
+                                className="group flex flex-col justify-between gap-10 px-6 py-8 sm:py-0 sm:px-8 sm:first:pl-0 sm:last:pr-0"
                             >
                                 {/* Top: title + body */}
                                 <div>

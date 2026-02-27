@@ -200,14 +200,14 @@ function ProjectModal({
                 </button>
 
                 {/* Scrollable content */}
-                <div className="overflow-y-auto flex-1">
+                <div className="overflow-y-auto flex-1 overscroll-contain">
                     {/* Hero image */}
                     <div className="relative w-full aspect-[16/9] sm:aspect-[16/7] shrink-0">
                         <Image
                             src={project.image}
                             alt={project.title}
                             fill
-                            className="object-cover"
+                            className="object-top object-cover"
                             sizes="90vw"
                         />
                         {/* Gradient fade at bottom */}

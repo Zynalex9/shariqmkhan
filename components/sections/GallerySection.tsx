@@ -1,37 +1,105 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const IMAGES = [
-    { src: "/10.png", height: "h-[340px]", position: "object-top" },
-    { src: "/1.png", height: "h-[620px]", position: "object-top" },
-    { src: "/2.png", height: "h-[420px]", position: "object-top" },
-
-    { src: "/3.png", height: "h-[380px]", position: "object-top" },
-
-    { src: "/7.png", height: "h-[300px]", position: "object-top" },
-    { src: "/4.png", height: "h-[240px]", position: "object-center" },
-    { src: "/8.png", height: "h-[360px]", position: "object-top" },
+    { src: "/10.png", position: "object-top" },
+    { src: "/1.png", position: "object-top" },
+    { src: "/2.png", position: "object-top" },
+    { src: "/3.png", position: "object-top" },
+    { src: "/7.png", position: "object-top" },
+    { src: "/4.png", position: "object-center" },
+    { src: "/8.png", position: "object-top" },
 ];
 
+const AUTOPLAY_INTERVAL = 5000;
+const THUMB_VISIBLE = 6; // how many thumbs before arrows appear
 
 export default function GallerySection() {
-    const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+    const [current, setCurrent] = useState(0);
+    const [direction, setDirection] = useState(0);
+    const [thumbOffset, setThumbOffset] = useState(0);
+    const autoplayRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const dragStartX = useRef(0);
+    const dragging = useRef(false);
 
-    const prev = () => { if (lightboxIdx !== null && lightboxIdx > 0) setLightboxIdx(lightboxIdx - 1); };
-    const next = () => { if (lightboxIdx !== null && lightboxIdx < IMAGES.length - 1) setLightboxIdx(lightboxIdx + 1); };
+    const total = IMAGES.length;
+    const showThumbArrows = total > THUMB_VISIBLE;
+    const maxThumbOffset = Math.max(0, total - THUMB_VISIBLE);
+
+    const goTo = useCallback(
+        (idx: number, dir?: number) => {
+            const n = (idx + total) % total;
+            setDirection(dir ?? (n > current ? 1 : -1));
+            setCurrent(n);
+        },
+        [current, total]
+    );
+
+    const prev = useCallback(() => goTo(current - 1, -1), [current, goTo]);
+    const next = useCallback(() => goTo(current + 1, 1), [current, goTo]);
+
+    /* Auto-scroll thumbnails to keep active in view */
+    useEffect(() => {
+        if (!showThumbArrows) return;
+        if (current < thumbOffset) setThumbOffset(current);
+        else if (current >= thumbOffset + THUMB_VISIBLE)
+            setThumbOffset(current - THUMB_VISIBLE + 1);
+    }, [current, thumbOffset, showThumbArrows]);
+
+    /* Autoplay */
+    useEffect(() => {
+        if (autoplayRef.current) clearTimeout(autoplayRef.current);
+        autoplayRef.current = setTimeout(next, AUTOPLAY_INTERVAL);
+        return () => { if (autoplayRef.current) clearTimeout(autoplayRef.current); };
+    }, [current, next]);
+
+    /* Keyboard */
+    useEffect(() => {
+        const handler = (e: KeyboardEvent) => {
+            if (e.key === "ArrowLeft") prev();
+            if (e.key === "ArrowRight") next();
+        };
+        window.addEventListener("keydown", handler);
+        return () => window.removeEventListener("keydown", handler);
+    }, [prev, next]);
+
+    /* Drag / swipe on main image */
+    const onPointerDown = (e: React.PointerEvent) => {
+        dragging.current = true;
+        dragStartX.current = e.clientX;
+    };
+    const onPointerUp = (e: React.PointerEvent) => {
+        if (!dragging.current) return;
+        dragging.current = false;
+        const delta = e.clientX - dragStartX.current;
+        if (Math.abs(delta) < 10) return;
+        if (delta < -50) next();
+        else if (delta > 50) prev();
+    };
+
+    const variants = {
+        enter: (d: number) => ({ opacity: 0, x: d * 48, scale: 0.97 }),
+        center: { opacity: 1, x: 0, scale: 1 },
+        exit: (d: number) => ({ opacity: 0, x: d * -48, scale: 0.97 }),
+    };
+
+    const prevIdx = (current - 1 + total) % total;
+    const nextIdx = (current + 1) % total;
 
     return (
-        <section id="gallery" className="relative bg-[#f2f2ed] py-20 sm:py-28 px-6 sm:px-10">
-            <div className="mx-auto max-w-7xl">
+        <section id="gallery" className="relative bg-[#f2f2ed] py-20 sm:py-28">
+            <div className="mx-auto max-w-7xl px-6 sm:px-10">
 
                 {/* Header */}
                 <AnimatedSection>
-                    <p className="text-[10px] text-background/30 mb-3 tracking-[0.25em] uppercase">( 05 )</p>
+                    <p className="text-[10px] text-background/30 mb-3 tracking-[0.25em] uppercase">
+                        ( 05 )
+                    </p>
                     <div className="flex items-end justify-between mb-12 sm:mb-16">
                         <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-background leading-[0.95] tracking-tight">
                             GALLERY
@@ -42,107 +110,202 @@ export default function GallerySection() {
                     </div>
                 </AnimatedSection>
 
-                {/* Masonry Grid */}
-                <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
-                    {IMAGES.map((img, i) => (
-                        <motion.div
-                            key={img.src}
-                            className={`break-inside-avoid ${img.height} relative overflow-hidden rounded-2xl cursor-pointer`}
-                            style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.07)" }}
-                            initial={{ opacity: 0, y: 24 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-40px" }}
-                            transition={{ duration: 0.6, delay: (i % 4) * 0.07, ease: [0.25, 0.1, 0.25, 1] }}
-                            whileHover={{ scale: 1.02, boxShadow: "0 8px 32px rgba(0,0,0,0.12)" }}
-                            onClick={() => setLightboxIdx(i)}
+                {/* ── Carousel track with peek ── */}
+                <AnimatedSection delay={0.1}>
+                    <div className="relative flex items-center justify-center gap-3 sm:gap-4">
+
+                        {/* Prev peek */}
+                        <div
+                            className="relative hidden sm:block shrink-0 rounded-xl overflow-hidden cursor-pointer"
+                            style={{
+                                width: "clamp(80px, 10vw, 140px)",
+                                height: "clamp(120px, 16vw, 220px)",
+                                opacity: 0.35,
+                                boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+                            }}
+                            onClick={prev}
+                            aria-label="Previous"
                         >
                             <Image
-                                src={img.src}
-                                alt={`Gallery ${i + 1}`}
+                                src={IMAGES[prevIdx].src}
+                                alt="Previous"
                                 fill
-                                className={`object-cover ${img.position} transition-transform duration-500`}
-
-                                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 28vw"
+                                className={`object-cover ${IMAGES[prevIdx].position}`}
+                                sizes="140px"
                             />
-                        </motion.div>
-                    ))}
-                </div>
-            </div>
+                            <div className="absolute inset-0 bg-[#f2f2ed]/40" />
+                        </div>
 
-            {/* Lightbox */}
-            <AnimatePresence>
-                {lightboxIdx !== null && (
-                    <>
-                        <motion.div
-                            key="backdrop"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.25 }}
-                            className="fixed inset-0 z-50 bg-background/95 backdrop-blur-xl"
-                            onClick={() => setLightboxIdx(null)}
-                        />
+                        {/* Main slide */}
+                        <div
+                            className="relative w-[90%] max-w-[820px] overflow-hidden rounded-2xl cursor-grab active:cursor-grabbing select-none"
 
-                        <motion.div
-                            key="panel"
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.95 }}
-                            transition={{ type: "spring", damping: 26, stiffness: 320 }}
-                            className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
+                            style={{
+                                height: "clamp(220px, 45vw, 500px)",
+                                boxShadow: "0 12px 48px rgba(0,0,0,0.12)",
+                            }}
+                            onPointerDown={onPointerDown}
+                            onPointerUp={onPointerUp}
+                            onPointerLeave={() => { dragging.current = false; }}
+                            aria-roledescription="carousel"
+                            aria-label="Gallery"
                         >
-                            {/* Close */}
+                            <AnimatePresence initial={false} custom={direction} mode="wait">
+                                <motion.div
+                                    key={current}
+                                    custom={direction}
+                                    variants={variants}
+                                    initial="enter"
+                                    animate="center"
+                                    exit="exit"
+                                    transition={{
+                                        opacity: { duration: 0.3, ease: "easeInOut" },
+                                        x: { type: "spring", stiffness: 300, damping: 32, mass: 0.8 },
+                                        scale: { duration: 0.3 },
+                                    }}
+                                    className="absolute inset-0"
+                                >
+                                    <Image
+                                        src={IMAGES[current].src}
+                                        alt={`Gallery ${current + 1}`}
+                                        fill
+                                        draggable={false}
+                                        className={`object-cover ${IMAGES[current].position}`}
+                                        sizes="(max-width: 768px) 95vw, 900px"
+                                        priority
+                                    />
+                                </motion.div>
+                            </AnimatePresence>
+
+                            {/* Arrows on main image */}
                             <button
-                                onClick={() => setLightboxIdx(null)}
-                                className="pointer-events-auto absolute right-6 top-6 flex items-center justify-center w-10 h-10 rounded-full border border-white/15 text-white/50 hover:text-white hover:border-white/40 transition-colors cursor-pointer"
-                                aria-label="Close"
+                                onClick={(e) => { e.stopPropagation(); prev(); }}
+                                aria-label="Previous"
+                                className="absolute left-3 top-1/2 -translate-y-1/2 z-10
+                                           flex items-center justify-center w-9 h-9 rounded-full
+                                           bg-white/65 backdrop-blur-sm border border-white/30
+                                           text-background/60 hover:text-background hover:bg-white/90
+                                           transition-all duration-200 cursor-pointer"
                             >
-                                <X className="h-4 w-4" />
+                                <ArrowLeft className="w-4 h-4" />
+                            </button>
+                            <button
+                                onClick={(e) => { e.stopPropagation(); next(); }}
+                                aria-label="Next"
+                                className="absolute right-3 top-1/2 -translate-y-1/2 z-10
+                                           flex items-center justify-center w-9 h-9 rounded-full
+                                           bg-white/65 backdrop-blur-sm border border-white/30
+                                           text-background/60 hover:text-background hover:bg-white/90
+                                           transition-all duration-200 cursor-pointer"
+                            >
+                                <ArrowRight className="w-4 h-4" />
                             </button>
 
-                            <div
-                                className="pointer-events-auto relative w-[85vw] h-[80vh] max-w-5xl"
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                <Image
-                                    src={IMAGES[lightboxIdx].src}
-                                    alt={`Gallery ${lightboxIdx + 1}`}
-                                    fill
-                                    className="object-contain rounded-xl"
-                                    sizes="85vw"
-                                />
-                            </div>
-
-                            {/* Prev */}
-                            {lightboxIdx > 0 && (
-                                <button
-                                    onClick={(e) => { e.stopPropagation(); prev(); }}
-                                    className="pointer-events-auto absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 p-3 text-white/30 hover:text-white transition-colors cursor-pointer"
-                                    aria-label="Previous"
-                                >
-                                    <ChevronLeft className="h-8 w-8" />
-                                </button>
-                            )}
-
-                            {/* Next */}
-                            {lightboxIdx < IMAGES.length - 1 && (
-                                <button
-                                    onClick={(e) => { e.stopPropagation(); next(); }}
-                                    className="pointer-events-auto absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 p-3 text-white/30 hover:text-white transition-colors cursor-pointer"
-                                    aria-label="Next"
-                                >
-                                    <ChevronRight className="h-8 w-8" />
-                                </button>
-                            )}
-
                             {/* Counter */}
-                            <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 text-white/30 text-xs tracking-widest">
-                                {lightboxIdx + 1} / {IMAGES.length}
+                            <div className="absolute bottom-3 right-3 z-10 px-3 py-1 rounded-full bg-black/25 backdrop-blur-sm">
+                                <span className="text-[11px] text-white/80 tabular-nums tracking-widest">
+                                    {String(current + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+                                </span>
                             </div>
-                        </motion.div>
-                    </>
-                )}
-            </AnimatePresence>
+                        </div>
+
+                        {/* Next peek */}
+                        <div
+                            className="relative hidden sm:block shrink-0 rounded-xl overflow-hidden cursor-pointer"
+                            style={{
+                                width: "clamp(80px, 10vw, 140px)",
+                                height: "clamp(120px, 16vw, 220px)",
+                                opacity: 0.35,
+                                boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+                            }}
+                            onClick={next}
+                            aria-label="Next"
+                        >
+                            <Image
+                                src={IMAGES[nextIdx].src}
+                                alt="Next"
+                                fill
+                                className={`object-cover ${IMAGES[nextIdx].position}`}
+                                sizes="140px"
+                            />
+                            <div className="absolute inset-0 bg-[#f2f2ed]/40" />
+                        </div>
+                    </div>
+
+                    {/* ── Thumbnail strip with overflow arrows ── */}
+                    <div className="mt-5 flex items-center justify-center gap-2 max-w-[900px] mx-auto">
+
+                        {/* Thumb prev arrow */}
+                        {showThumbArrows && (
+                            <button
+                                onClick={() => setThumbOffset((o) => Math.max(0, o - 1))}
+                                disabled={thumbOffset === 0}
+                                aria-label="Scroll thumbnails left"
+                                className="shrink-0 flex items-center justify-center w-7 h-7 rounded-full
+                                           border border-background/15 text-background/40
+                                           hover:text-background hover:border-background/30
+                                           disabled:opacity-20 disabled:cursor-not-allowed
+                                           transition-all duration-200 cursor-pointer"
+                            >
+                                <ChevronLeft className="w-3.5 h-3.5" />
+                            </button>
+                        )}
+
+                        {/* Thumbnails */}
+                        <div className="flex gap-2 overflow-hidden" style={{ maxWidth: `${THUMB_VISIBLE * 84}px` }}>
+                            <motion.div
+                                className="flex gap-2"
+                                animate={{ x: -(thumbOffset * 84) }}
+                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                            >
+                                {IMAGES.map((img, i) => (
+                                    <button
+                                        key={img.src + i}
+                                        onClick={() => goTo(i, i > current ? 1 : -1)}
+                                        aria-label={`Go to slide ${i + 1}`}
+                                        className="relative shrink-0 rounded-lg overflow-hidden cursor-pointer focus:outline-none transition-all duration-300"
+                                        style={{
+                                            width: "76px",
+                                            height: "52px",
+                                            opacity: i === current ? 1 : 0.42,
+                                            boxShadow: i === current
+                                                ? "0 0 0 2px rgba(0,0,0,0.55)"
+                                                : "0 0 0 1px rgba(0,0,0,0.07)",
+                                            transform: i === current ? "scale(1.06)" : "scale(1)",
+                                        }}
+                                    >
+                                        <Image
+                                            src={img.src}
+                                            alt={`Thumbnail ${i + 1}`}
+                                            fill
+                                            draggable={false}
+                                            className={`object-cover ${img.position}`}
+                                            sizes="76px"
+                                        />
+                                    </button>
+                                ))}
+                            </motion.div>
+                        </div>
+
+                        {/* Thumb next arrow */}
+                        {showThumbArrows && (
+                            <button
+                                onClick={() => setThumbOffset((o) => Math.min(maxThumbOffset, o + 1))}
+                                disabled={thumbOffset >= maxThumbOffset}
+                                aria-label="Scroll thumbnails right"
+                                className="shrink-0 flex items-center justify-center w-7 h-7 rounded-full
+                                           border border-background/15 text-background/40
+                                           hover:text-background hover:border-background/30
+                                           disabled:opacity-20 disabled:cursor-not-allowed
+                                           transition-all duration-200 cursor-pointer"
+                            >
+                                <ChevronRight className="w-3.5 h-3.5" />
+                            </button>
+                        )}
+                    </div>
+
+                </AnimatedSection>
+            </div>
         </section>
     );
 }
