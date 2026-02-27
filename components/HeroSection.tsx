@@ -104,7 +104,7 @@ export default function HeroSection() {
                 <div className="relative flex flex-col items-center">
 
                     {/* ── Floating credential labels (positioned around the photo) ── */}
-                    <div className="relative w-full max-w-7xl mx-auto">
+                    <div className="relative w-full max-w-7xl mx-auto py-8 sm:py-0">
 
                         {/* Portrait photo — centered */}
                         <motion.div
